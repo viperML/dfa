@@ -15,7 +15,7 @@ lazy val root = project
       "org.http4s" %% "http4s-ember-server" % http4sVersion,
       "org.http4s" %% "http4s-dsl" % http4sVersion,
       "org.http4s" %% "http4s-circe" % http4sVersion,
-      "io.circe" %% "circe-generic" % "0.14.6",
+      "io.circe" %% "circe-generic" % "0.14.6"
     ),
     libraryDependencies += "org.typelevel" %% "cats-core" % "2.10.0",
     libraryDependencies += "org.typelevel" %% "cats-effect" % "3.5.2",
@@ -27,3 +27,17 @@ lazy val root = project
     libraryDependencies += "co.fs2" %% "fs2-core" % "3.9.2",
     libraryDependencies += "dev.kovstas" %% "fs2-throttler" % "1.0.8"
   )
+
+assembly / assemblyMergeStrategy := {
+
+  case PathList("META-INF", xs @ _*) =>
+    (xs map { _.toLowerCase }) match {
+      case "services" :: xs => MergeStrategy.filterDistinctLines
+      case _                => MergeStrategy.discard
+    }
+
+  case PathList("reference.conf") => MergeStrategy.concat
+
+  case x => MergeStrategy.first
+
+}

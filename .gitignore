@@ -3,7 +3,6 @@
 .vscode
 .bloop
 .metals
-project
 .env
 
 # Created by https://www.toptal.com/developers/gitignore/api/scala,sbt
@@ -17,8 +16,13 @@ dist/*
 target/
 lib_managed/
 src_managed/
-project/boot/
-project/plugins/project/
+project/boot
+project/build/target
+project/plugins/lib_managed
+project/plugins/src_managed
+project/plugins/target
+project/plugins/project/build.properties
+metals.sbt
 .history
 .cache
 .lib/
