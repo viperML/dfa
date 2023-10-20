@@ -107,15 +107,15 @@ object App extends IOApp.Simple {
   val run = for {
     pool <- Env[IO].get("DANBOORU_POOL").map(_.get)
 
-    auth <- for {
+    given DanbooruAuth <- for {
       login <- Env[IO].get("DANBOORU_USERNAME").map(_.get)
       api_key <- Env[IO].get("DANBOORU_APIKEY").map(_.get)
     } yield DanbooruAuth(login, api_key)
 
     _ <- client_res.use { implicit client =>
       for {
-        favs <- favGroups(pool)(using client)(using auth)
-        authors <- commonAuthors(favs.post_ids)(using client)(using auth)
+        favs <- favGroups(pool)
+        authors <- commonAuthors(favs.post_ids)
 
         _ <- authors.toList.traverse { (author, responses) =>
           for {
