@@ -118,9 +118,8 @@ object App extends IOApp.Simple {
         authors <- commonAuthors(favs.post_ids)
 
         _ <- authors.toList.traverse { (author, responses) =>
-          for {
-            _ <- IO.println(author)
-            _ <- responses.traverse { resp =>
+          IO.println(author)
+            *> responses.traverse { resp =>
               {
                 val text = resp.file_url match
                   case Some(url) => url
@@ -128,7 +127,6 @@ object App extends IOApp.Simple {
                 IO.println(s"\t ${resp.id} - ${text}")
               }
             }
-          } yield ()
         }
       } yield ()
     }
